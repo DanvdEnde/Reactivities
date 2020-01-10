@@ -389,3 +389,4 @@ sketch
 .history
 
 # End of https://www.gitignore.io/api/react,csharp,dotnetcore,visualstudiocode
+API/reactivities.db
