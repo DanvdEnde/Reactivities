@@ -17,14 +17,14 @@ interface IProps {
     deleteActivity: (id: string) => void;
 }
 
-const ActivityDashboard: React.FC<IProps> = ({ 
-    activities, 
-    selectActivity, 
-    selectedActivity, 
-    editMode, 
-    setEditMode, 
-    setSelectedActivity, 
-    createActivity, 
+const ActivityDashboard: React.FC<IProps> = ({
+    activities,
+    selectActivity,
+    selectedActivity,
+    editMode,
+    setEditMode,
+    setSelectedActivity,
+    createActivity,
     editActivity,
     deleteActivity
 }) => {
