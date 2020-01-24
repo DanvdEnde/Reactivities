@@ -60,7 +60,6 @@ export class ActivityStore {
     this.submitting = true;
     try {
       await agent.Activities.update(activity);
-
       runInAction("editing activity", () => {
         this.activityRegistry.set(activity.id, activity);
         this.selectedActivity = activity;
@@ -83,13 +82,13 @@ export class ActivityStore {
     this.target = event.currentTarget.name;
     try {
       await agent.Activities.delete(id);
-      runInAction("deleting activities", () => {
+      runInAction("deleting activity", () => {
         this.activityRegistry.delete(id);
         this.submitting = false;
         this.target = "";
       });
     } catch (error) {
-      runInAction("deleting activities error", () => {
+      runInAction("deleting activity error", () => {
         this.submitting = false;
       });
       this.target = "";

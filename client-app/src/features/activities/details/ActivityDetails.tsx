@@ -5,7 +5,11 @@ import { observer } from "mobx-react-lite";
 
 const ActivityDetails: React.FC = () => {
   const activityStore = useContext(ActivityStore);
-  const { selectedActivity: activity , openEditForm, cancelSelectedActivity} = activityStore;
+  const {
+    selectedActivity: activity,
+    openEditForm,
+    cancelSelectedActivity
+  } = activityStore;
   return (
     <Card fluid>
       <Image
