@@ -10,8 +10,8 @@ namespace API.Middleware
 {
     public class ErrorHandlingMiddleware
     {
-        public RequestDelegate _next { get; }
-        public ILogger<ErrorHandlingMiddleware> _logger { get; }
+        private readonly RequestDelegate _next;
+        private readonly ILogger<ErrorHandlingMiddleware> _logger;
         public ErrorHandlingMiddleware(RequestDelegate next, ILogger<ErrorHandlingMiddleware> logger)
         {
             _next = next;
@@ -48,7 +48,7 @@ namespace API.Middleware
                     break;
             }
 
-            context.Response.ContentType = "applicatio/json";
+            context.Response.ContentType = "application/json";
             if (errors != null)
             {
                 var result = JsonSerializer.Serialize(new
