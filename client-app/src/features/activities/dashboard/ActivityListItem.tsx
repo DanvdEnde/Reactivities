@@ -21,7 +21,7 @@ export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
         </Item.Group>
       </Segment>
       <Segment>
-        <Icon name="clock" /> {format(activity.date!, "H:mm")}
+        <Icon name="clock" /> {format(activity.date, "H:mm")}
         <Icon name="marker" /> {activity.venue}, {activity.city}
       </Segment>
       <Segment secondary>Participant will be stacked here.</Segment>

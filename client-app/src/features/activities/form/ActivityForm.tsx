@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Segment, Form, Button, Grid } from "semantic-ui-react";
-import { IActivity } from "../../../app/models/activity";
+import { ActivityFormValues } from "../../../app/models/activity";
 import ActivityStore from "../../../app/stores/activityStore";
 import { observer } from "mobx-react-lite";
 import { RouteComponentProps } from "react-router-dom";
@@ -10,6 +10,7 @@ import TextAreaInput from "../../../app/common/form/TextAreaInput";
 import SelectInput from "../../../app/common/form/SelectInput";
 import DateInput from "../../../app/common/form/DateInput";
 import { category } from "../../../app/common/form/options/categoryOptions";
+import { combineDateAndTime } from "../../../app/common/util/util";
 
 interface DetailParams {
   id: string;
@@ -20,39 +21,19 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   history
 }) => {
   const activityStore = useContext(ActivityStore);
-  const {
-    submitting,
-    activity: initialFormState,
-    loadActivity,
-    clearActivity
-  } = activityStore;
+  const { submitting, loadActivity } = activityStore;
 
-  const [activity, setActivity] = useState<IActivity>({
-    id: "",
-    title: "",
-    category: "",
-    description: "",
-    date: null,
-    city: "",
-    venue: ""
-  });
+  const [activity, setActivity] = useState(new ActivityFormValues());
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (match.params.id && activity.id.length === 0) {
-      loadActivity(match.params.id).then(
-        () => initialFormState && setActivity(initialFormState)
-      );
+    if (match.params.id) {
+      setLoading(true);
+      loadActivity(match.params.id)
+        .then(activity => setActivity(new ActivityFormValues(activity)))
+        .finally(() => setLoading(false));
     }
-    return () => {
-      clearActivity();
-    };
-  }, [
-    loadActivity,
-    match.params.id,
-    clearActivity,
-    initialFormState,
-    activity.id.length
-  ]);
+  }, [loadActivity, match.params.id]);
 
   // const handleSubmit = () => {
   //   if (activity.id.length === 0) {
@@ -71,7 +52,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
   // };
 
   const handleFinalFormSubmit = (values: any) => {
-    console.log(values);
+    const dateAndTime = combineDateAndTime(values.date, values.time);
+    const { date, time, ...activity } = values;
+    activity.date = dateAndTime;
+    console.log(activity);
   };
 
   return (
@@ -79,9 +63,10 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
       <Grid.Column width={10}>
         <Segment clearing>
           <FinalForm
+            initialValues={activity}
             onSubmit={handleFinalFormSubmit}
             render={({ handleSubmit }) => (
-              <Form onSubmit={handleSubmit}>
+              <Form onSubmit={handleSubmit} loading={loading}>
                 <Field
                   name="title"
                   placeholder="Title"
@@ -102,12 +87,22 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                   value={activity.category}
                   component={SelectInput}
                 />
-                <Field
-                  name="date"
-                  placeholder="Date"
-                  value={activity.date!}
-                  component={DateInput}
-                />
+                <Form.Group widths="equal">
+                  <Field
+                    name="date"
+                    placeholder="Date"
+                    date={true}
+                    value={activity.date}
+                    component={DateInput}
+                  />
+                  <Field
+                    name="time"
+                    placeholder="Time"
+                    time={true}
+                    value={activity.time}
+                    component={DateInput}
+                  />
+                </Form.Group>
                 <Field
                   name="city"
                   placeholder="City"
@@ -122,6 +117,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                 />
                 <Button
                   loading={submitting}
+                  disabled={loading}
                   floated="right"
                   positive
                   type="submit"
@@ -129,6 +125,7 @@ const ActivityForm: React.FC<RouteComponentProps<DetailParams>> = ({
                 />
                 <Button
                   onClick={() => history.push("/activities")}
+                  disabled={loading}
                   floated="right"
                   type="submit"
                   content="Cancel"

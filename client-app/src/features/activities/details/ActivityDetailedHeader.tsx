@@ -38,7 +38,7 @@ const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
                   content={activity.title}
                   style={{ color: "white" }}
                 />
-                <p>{format(activity.date!, "eeee do MMMM")}</p>
+                <p>{format(activity.date, "eeee do MMMM")}</p>
                 <p>
                   Hosted by <strong>Bob</strong>
                 </p>
@@ -50,7 +50,12 @@ const ActivityDetailedHeader: React.FC<{ activity: IActivity }> = ({
       <Segment clearing attached="bottom">
         <Button color="teal">Join Activity</Button>
         <Button>Cancel attendance</Button>
-        <Button as={Link} to={`/manage/${activity.id}`} color="orange" floated="right">
+        <Button
+          as={Link}
+          to={`/manage/${activity.id}`}
+          color="orange"
+          floated="right"
+        >
           Manage Event
         </Button>
       </Segment>
