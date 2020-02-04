@@ -7,7 +7,7 @@ axios.defaults.baseURL = "http://localhost:5000/api";
 
 axios.interceptors.response.use(undefined, error => {
   if (error.message === "Network error" && !error.response) {
-    toast.error("Network error - API might be borked!")
+    toast.error("Network error - API might be borked!");
   }
   const { status, data, config } = error.response;
   if (status === 404) {
@@ -21,8 +21,9 @@ axios.interceptors.response.use(undefined, error => {
     history.push("/notfound");
   }
   if (status === 500) {
-    toast.error("server error - check the terminal for troubleshooting")
+    toast.error("server error - check the terminal for troubleshooting");
   }
+  throw error;
 });
 
 const responseBody = (response: AxiosResponse) => response.data;
