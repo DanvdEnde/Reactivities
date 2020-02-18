@@ -21,12 +21,29 @@ export default class UserStore {
       const user = await agent.User.login(values);
       runInAction(() => {
         this.user = user;
-        console.log(user);
       });
-      history.push('/activities')
+      this.rootStore.commonStore.setToken(user.token);
+      history.push("/activities");
     } catch (error) {
       console.log(error);
       throw error;
+    }
+  };
+
+  @action logout = () => {
+    this.rootStore.commonStore.setToken(null);
+    this.user = null;
+    history.push("/");
+  };
+
+  @action getUser = async () => {
+    try {
+      const user = await agent.User.current();
+      runInAction(() => {
+        this.user = user;
+      });
+    } catch (error) {
+      console.log(error);
     }
   };
 }
