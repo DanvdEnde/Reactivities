@@ -11,11 +11,12 @@ import {
 } from "react-router-dom";
 import HomePage from "../../features/home/HomePage";
 import ActivityForm from "../../features/activities/form/ActivityForm";
+import { LoginForm } from "../../features/user/LoginForm";
 import ActivityDetails from "../../features/activities/details/ActivityDetails";
 import NotFound from "../layout/NotFound";
 import { toast } from "react-toastify";
 
-toast.configure()
+toast.configure();
 
 const App: React.FC<RouteComponentProps> = ({ location }) => {
   return (
@@ -36,6 +37,7 @@ const App: React.FC<RouteComponentProps> = ({ location }) => {
                   path={["/createActivity", "/manage/:id"]}
                   component={ActivityForm}
                 />
+                <Route path="/login" component={LoginForm} />
                 <Route component={NotFound} />
               </Switch>
             </Container>
