@@ -2,6 +2,7 @@ import React from "react";
 import { Item, Button, Segment, Icon } from "semantic-ui-react";
 import { Link } from "react-router-dom";
 import { IActivity } from "../../../app/models/activity";
+import { ActivityListItemAttendees } from "./ActivityListItemAttendees";
 import { format } from "date-fns";
 
 export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
@@ -24,7 +25,9 @@ export const ActivityListItem: React.FC<{ activity: IActivity }> = ({
         <Icon name="clock" /> {format(activity.date, "H:mm")}
         <Icon name="marker" /> {activity.venue}, {activity.city}
       </Segment>
-      <Segment secondary>Participant will be stacked here.</Segment>
+      <Segment secondary>
+        <ActivityListItemAttendees attendees={activity.attendees} />
+      </Segment>
       <Segment clearing>
         <span>{activity.description}</span>
         <Button
